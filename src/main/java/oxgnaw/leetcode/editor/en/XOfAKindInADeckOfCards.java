@@ -58,6 +58,9 @@
 // 
 // Related Topics Array Math 
 // 👍 510 👎 127
+/**
+ * 求几个数的最大公约数g，只须遍历一遍，从前向后求g和下一个数的最大公约数，然后赋值给g既可
+ */
 
 package oxgnaw.leetcode.editor.en;
   public class XOfAKindInADeckOfCards{
