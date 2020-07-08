@@ -73,45 +73,28 @@ class Solution {
               for (int i : deck) {
                   bitmap[i] = bitmap[i] + 1;
               }
-              return hasGroup(bitmap);
-          }
 
-          private boolean hasGroup(int[] bitmap) {
-              int min = getMin(bitmap);
-              if (min == Integer.MAX_VALUE) return true;
-              if (min < 2) return false;
+              // 最大公约数
+              int g = 0;
+
               for (int i = 0 ; i < bitmap.length ; i++) {
                   if (bitmap[i] == 0) {
                       continue;
                   }
-                  if (!hasX(bitmap[i], min)) return false;
-                  int tmp = bitmap[i] - min;
-                  if (tmp == 1) {
-                      return false;
-                  }
-                  bitmap[i] = tmp;
-              }
-              return hasGroup(bitmap);
-          }
-
-          private int getMin(int[] bitmap) {
-              int min = Integer.MAX_VALUE;
-              for (int i : bitmap) {
-                  if (i == 0) {
-                      continue;
-                  }
-                  if (i < min) {
-                      min = i;
+                  if (g == 0) {
+                      g = bitmap[i];
+                  } else {
+                      g = hasX(bitmap[i], g);
                   }
               }
-              return min;
+              return g >= 2;
           }
 
-          private boolean hasX(int i, int j) {
+
+          private int hasX(int i, int j) {
+              if (j == 0) return i;
               int tmp = i % j;
-              if (tmp == 0) return true;
-              if (tmp == 1) return false;
-              return hasX(j, tmp);
+              return hasX(j,tmp);
           }
       }
 //leetcode submit region end(Prohibit modification and deletion)
