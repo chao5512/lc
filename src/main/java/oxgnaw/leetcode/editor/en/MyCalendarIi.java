@@ -51,6 +51,8 @@
 
 package oxgnaw.leetcode.editor.en;
 
+import java.util.TreeMap;
+
 public class MyCalendarIi {
     public static void main(String[] args) {
         MyCalendarIi.MyCalendarTwo myCalendarTwo = new MyCalendarIi().new MyCalendarTwo();
@@ -64,77 +66,27 @@ public class MyCalendarIi {
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class MyCalendarTwo {
-        private final byte[] calendar;
-        private final byte[] calendarSd;
-        private final int length = 1000000000 >> 3;
-
+        private TreeMap<Integer, Integer> order;
         public MyCalendarTwo() {
-            calendar = new byte[length];
-            calendarSd = new byte[length];
+            order = new TreeMap();
         }
 
         public boolean book(int start, int end) {
-            if (check(start, end)) {
-                push(start, end);
-                return true;
-            }
-            return false;
-        }
-
-        private void push(int start, int end) {
-            for (int i = start; i < end; i++) {
-                if (checkBit(i, calendar)) {
-                    setBit(i, calendarSd);
-                } else {
-                    setBit(i, calendar);
-                }
-            }
-        }
-
-        private boolean check(int start, int end) {
-
-            for (int i = start; i < end; i++) {
-                if (checkBit(i, calendar) && checkBit(i, calendarSd)) {
+            order.put(start, order.getOrDefault(start, 0) + 1);
+            order.put(end, order.getOrDefault(end, 0) - 1);
+            int d = 0;
+            for (Integer delta : order.values()) {
+                d += delta;
+                if (d >= 3) {
+                    order.put(start, order.get(start) - 1);
+                    order.put(end, order.get(end) + 1);
                     return false;
                 }
             }
             return true;
         }
 
-        /**
-         * Bit-value lookup array to prevent doing the same work over and over
-         */
-        public final byte[] bitvals = {
-            (byte) 0x80,
-            (byte) 0x40,
-            (byte) 0x20,
-            (byte) 0x10,
-            (byte) 0x08,
-            (byte) 0x04,
-            (byte) 0x02,
-            (byte) 0x01
-        };
 
-        /**
-         * Check if bit at specified index is 1.
-         *
-         * @param pos index of bit
-         *
-         * @return true if bit at specified index is 1, false if 0.
-         */
-        boolean checkBit(int pos, byte[] bloomBuf) {
-            int bytePos = pos >> 3; //pos / 8
-            int bitPos = pos & 0x7; //pos % 8
-            byte curByte = bloomBuf[bytePos];
-            curByte &= bitvals[bitPos];
-            return (curByte != 0);
-        }
-
-        void setBit(int pos, byte[] calendar) {
-            int bytePos = pos >> 3; //pos / 8
-            int bitPos = pos & 0x7; //pos % 8
-            calendar[bytePos] |= bitvals[bitPos];
-        }
     }
 
 /**
