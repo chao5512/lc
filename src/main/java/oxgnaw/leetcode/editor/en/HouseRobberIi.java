@@ -33,24 +33,36 @@ package oxgnaw.leetcode.editor.en;
 public class HouseRobberIi {
     public static void main(String[] args) {
         Solution solution = new HouseRobberIi().new Solution();
-        System.out.println(solution.rob(new int[]{2}));
+        System.out.println(solution.rob(new int[] {1,1,1,2}));
+        System.out.println(solution.rob(new int[] {2,3,2}));
+        System.out.println(solution.rob(new int[] {1,1,1,2}));
+        System.out.println(solution.rob(new int[]{1,1,3,6,7,10,7,1,8,5,9,1,4,4,3}));
+        System.out.println(solution.rob(new int[] {2,2,4,3,2,5}));
+        System.out.println(solution.rob(new int[] {2,7,9,3,1}));
+        System.out.println(solution.rob(new int[]{1, 2, 3}));
+        System.out.println(solution.rob(new int[]{}));
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int rob(int[] nums) {
             int len = nums.length;
+            if(len == 0) return 0;
             if(len == 1) return nums[0];
-            if (len < 2){
-                return 0;
-            }
-            return Math.max(robit(1, len - 1, nums), robit(0, len - 2, nums));
+            // 重点是将环形结构拆分成为2个单链结构，再对单链结构列状态转移方程， 做动态规划
+            return Math.max(rob(nums, 0, len - 1), rob(nums, 1, len - 1));
         }
 
-        private int robit(int start, int end, int[] nums) {
-            if (end < start) return 0;
-            //if (end == start) return nums[end];
-            return Math.max(robit(start, end - 1, nums), robit(start, end - 2, nums) + nums[end]);
+        private int rob(int[] nums, int start, int len) {
+            if(len < 2) return nums[start];
+            int[] robit = new int[len];
+            int[] notrobit = new int[len];
+            robit[0] = nums[start];
+            for(int i = 0 ; i < len - 1; i++) {
+                robit[i + 1] = notrobit[i] + nums[start + i + 1];
+                notrobit[i + 1] = Math.max(robit[i], notrobit[i]);
+            }
+            return Math.max(robit[len - 1], notrobit[len - 1]);
         }
 
     }
