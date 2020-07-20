@@ -92,11 +92,13 @@ public class PathSumIi {
             int s = 0;
             while (!treeNodes.empty()) {
                 TreeNode pop = treeNodes.pop();
+                // 回溯的时候碰倒占位符从和数减去最后一个值
                 if(pop == null){
                     Integer remove = vals.remove(vals.size() - 1);
                     s -= remove;
                     continue;
                 }
+                // 用null占位每个被拆分的父节点
                 treeNodes.push(null);
                 if (pop.right != null) {
                     treeNodes.push(pop.right);
