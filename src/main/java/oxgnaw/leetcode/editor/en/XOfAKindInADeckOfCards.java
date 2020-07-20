@@ -63,43 +63,54 @@
  */
 
 package oxgnaw.leetcode.editor.en;
-  public class XOfAKindInADeckOfCards{
-      public static void main(String[] args) {
-           Solution solution = new XOfAKindInADeckOfCards().new Solution();
-          System.out.println(solution.hasGroupsSizeX(new int[]{0,0,0,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,6,6,6,7,7,7,7,7,8,8,9,10,11,11,11,12,13,14,15,16,17}));
-      }
-      //leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-          public boolean hasGroupsSizeX(int[] deck) {
 
-              int[] bitmap = new int[10000];
-              for (int i : deck) {
-                  bitmap[i] = bitmap[i] + 1;
-              }
+public class XOfAKindInADeckOfCards {
+    public static void main(String[] args) {
+        Solution solution = new XOfAKindInADeckOfCards().new Solution();
+        System.out.println(solution.hasGroupsSizeX(
+            new int[] {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5,
+                5, 5, 5, 5, 5, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 9, 10, 11, 11, 11, 12, 13, 14, 15, 16, 17}));
+    }
 
-              // 最大公约数
-              int g = 0;
+    //leetcode submit region begin(Prohibit modification and deletion)
+    class Solution {
+        public boolean hasGroupsSizeX(int[] deck) {
 
-              for (int i = 0 ; i < bitmap.length ; i++) {
-                  if (bitmap[i] == 0) {
-                      continue;
-                  }
-                  if (g == 0) {
-                      g = bitmap[i];
-                  } else {
-                      g = hasX(bitmap[i], g);
-                  }
-              }
-              return g >= 2;
-          }
+            int[] bitmap = new int[10000];
+            for (int i : deck) {
+                bitmap[i] = bitmap[i] + 1;
+            }
 
+            // 最大公约数
+            int g = 0;
 
-          private int hasX(int i, int j) {
-              if (j == 0) return i;
-              int tmp = i % j;
-              return hasX(j,tmp);
-          }
-      }
+            for (int i = 0; i < bitmap.length; i++) {
+                if (bitmap[i] == 0) {
+                    continue;
+                }
+                if (g == 0) {
+                    g = bitmap[i];
+                } else {
+                    g = getGCD(bitmap[i], g);
+                }
+            }
+            return g >= 2;
+        }
+
+        /**
+         * get great common divisor
+         *
+         * @return gcd
+         */
+        private int getGCD(int i, int j) {
+            if (j == 0) {
+                return i;
+            }
+            int tmp = i % j;
+            return getGCD(j, tmp);
+        }
+    }
 //leetcode submit region end(Prohibit modification and deletion)
 
- }
+}
