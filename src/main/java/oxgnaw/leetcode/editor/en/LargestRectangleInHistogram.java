@@ -25,26 +25,48 @@
 
 package oxgnaw.leetcode.editor.en;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.Stack;
+
 public class LargestRectangleInHistogram {
     public static void main(String[] args) {
         Solution solution = new LargestRectangleInHistogram().new Solution();
         System.out.println(solution.largestRectangleArea(new int[]{2 ,2, 1, }));
+        System.out.println(solution.largestRectangleArea(new int[]{2,1,5,6,2,3}));
+        System.out.println(solution.largestRectangleArea(new int[]{2,1,2}));
+        System.out.println(solution.largestRectangleArea(new int[]{5,4,1,2}));
+        System.out.println(solution.largestRectangleArea(new int[]{4,2,0,3,2,5}));
+        System.out.println(solution.largestRectangleArea(new int[]{3,2,5}));
+        System.out.println(solution.largestRectangleArea(new int[]{3,6,5,7,4,8,1,0}));
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int largestRectangleArea(int[] heights) {
-            int max = 0;
-            int j, k;
-            for (int i = 0; i < heights.length; i++) {
-                j = k = i;
-                while (--j > -1 && heights[j] >= heights[i]) {
+            if(heights.length == 0) return 0;
+            if(heights.length == 1) return heights[0];
+            Deque<Integer> pos = new ArrayDeque<>();
+            int result = 0;
+            pos.push(0);
+            int tmp = 0;
+            for (int i = 1; i < heights.length; i++) {
+                if (heights[i] < heights[pos.peek()]) {
+                    while (!pos.isEmpty() && heights[pos.peek()] > heights[i]) {
+                        tmp = pos.pop();
+                        int width = pos.isEmpty() ? i  : i - pos.peek() - 1;
+                        result = Math.max(result, heights[tmp] * width);
+                    }
                 }
-                while (++k < heights.length && heights[k] >= heights[i]){
-                }
-                max = Math.max(max, (k - j - 1) * heights[i]);
+                pos.push(i);
             }
-            return max;
+            int theLastPos = heights.length;
+            while (!pos.isEmpty()) {
+                tmp = pos.pop();
+                int width = pos.isEmpty() ? theLastPos : theLastPos - pos.peek() - 1;
+                result = Math.max(result, width * heights[tmp]);
+            }
+            return result;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
