@@ -26,7 +26,7 @@ public class LongestPalindromicSubstring {
         System.out.println(solution.isPalindromic("abaaa", 0, 2));
         System.out.println(solution.isPalindromic("abaaa", 0, 1));
         System.out.println(solution.isPalindromic("a", 0, 0));
-        System.out.println(solution.longestPalindrome("abaaa"));
+        System.out.println(solution.longestPalindrome("abbaaa"));
         System.out.println(solution.longestPalindrome("a"));
         long start = System.currentTimeMillis();
         System.out.println("dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd");
@@ -39,12 +39,34 @@ public class LongestPalindromicSubstring {
             if (s.length() == 1) return s;
             int startPos = 0;
             int len = 0;
-            for (int i = 0; i < s.length() - 1; i++) {
-                for (int j = i; j < s.length(); j++) {
-                    if (isPalindromic(s, i, j) && j - i + 1 > len) {
-                        startPos = i;
-                        len = j - i + 1;
-                    }
+            int left;
+            int right;
+            for (int i = 0; i < s.length(); i++) {
+                left = right = i;
+                while ((left - 1) >= 0 && (right + 1) < s.length() && s.charAt(left - 1) == s.charAt(right + 1)){
+                    left --;
+                    right ++;
+                }
+                //System.out.println("len :" + len);
+                //System.out.println("left :" + left + "right : " + right);
+                if ((right - left + 1) > len) {
+                    startPos =  left;
+                    len = right - left + 1;
+                }
+
+                left = right = i;
+                if (i + 1 < s.length() && s.charAt(i) == s.charAt(i + 1)) {
+                    right ++;
+                }
+
+                while ((left - 1) >= 0 && (right + 1) < s.length() && s.charAt(left - 1) == s.charAt(right + 1)){
+                    left --;
+                    right ++;
+                }
+
+                if ((right - left + 1) > len) {
+                    startPos =  left;
+                    len = right - left + 1;
                 }
             }
             return s.substring(startPos, startPos + len);
