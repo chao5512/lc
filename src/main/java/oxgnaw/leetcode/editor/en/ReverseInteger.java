@@ -52,6 +52,7 @@ public class ReverseInteger {
             }
             integers.add(x);
             int result = 0;
+            // use to determine if the reserve number is over flow
             double tmp;
             for (Integer integer : integers) {
                 tmp =  Math.pow(10, count) * integer + result;
