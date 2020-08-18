@@ -55,14 +55,16 @@ public class ZigzagConversion {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < numRows; i++) {
                 for (int j = 0; j < s.length(); j += (numRows - 1) * 2) {
+                    // first candidate
                     if (j + i < s.length()) {
                         sb.append(s.charAt(j + i));
                     }
                     int next = j + (numRows - 1) * 2;
-                    int secondCandite = j + 2 * numRows -i -2;
-                    if (secondCandite == (j + i) || secondCandite == next)continue;
-                    if(secondCandite < s.length()) {
-                        sb.append(s.charAt(secondCandite));
+                    // second candidate
+                    int secondCandidate = j + 2 * numRows -i -2;
+                    if (secondCandidate == (j + i) || secondCandidate == next)continue;
+                    if(secondCandidate < s.length()) {
+                        sb.append(s.charAt(secondCandidate));
                     }
                 }
             }
